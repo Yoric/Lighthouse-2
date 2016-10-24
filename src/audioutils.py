@@ -52,12 +52,13 @@ def play(samples):
     end = time.time()
 
     # the write() call above only blocks until all the
-    # samples are buffered by the kernel, so it returns
+    # samples are buffered by the kernel, so it may return
     # before the sound has finished playing.
     # We want our function to block until the sound is done
     duration = float(len(samples))/(BYTES_PER_SAMPLE * SAMPLES_PER_SECOND)
     elapsed = end - start
-    time.sleep(duration - elapsed)
+    if duration - elapsed > 0:
+        time.sleep(duration - elapsed)
 
 def playfile(filename):
     with open(filename, 'rb') as f:
